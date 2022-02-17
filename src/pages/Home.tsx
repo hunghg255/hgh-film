@@ -33,7 +33,7 @@ const Home: FC = () => {
 
   return (
     <>
-      <Title value='Hgh Film- AdFree Movie / Anime Watching Website' />
+      <Title value='FilmHot - AdFree Movie / Anime Watching Website' />
 
       <div className='flex sm:hidden justify-between px-[4vw] mt-6'>
         <Link to='/' className='flex items-center gap-2'>
@@ -46,15 +46,11 @@ const Home: FC = () => {
         </button>
       </div>
 
-      <div
-        onClick={() => setSidebarActive(false)}
-        className={`bg-[#00000080] z-[5] fixed top-0 left-0 w-full h-full transition duration-500 ${
-          sidebarActive ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      ></div>
-
       <div className='flex'>
-        <SideBar sidebarActive={sidebarActive} />
+        <SideBar
+          sidebarActive={sidebarActive}
+          setSidebarActive={setSidebarActive}
+        />
 
         <div className='flex-grow px-[4vw] md:px-8 pb-8 pt-0 overflow-hidden flex flex-col items-stretch'>
           {!data || error ? (
@@ -96,20 +92,28 @@ const Home: FC = () => {
                     >
                       <BannerSlider
                         images={
-                          section.recommendContentVOList.map((item) => {
-                            const searchParams = new URLSearchParams(
-                              new URL(item.jumpAddress).search
-                            );
+                          (section.recommendContentVOList
+                            .map((item) => {
+                              const searchParams = new URLSearchParams(
+                                new URL(item.jumpAddress).search
+                              );
 
-                            return {
-                              title: item.title,
-                              image: item.imageUrl,
-                              link:
-                                searchParams.get('type') === '0'
-                                  ? `/movie/${searchParams.get('id')}`
-                                  : `/tv/${searchParams.get('id')}`,
-                            };
-                          }) || []
+                              if (!searchParams.get('id')) return null;
+
+                              return {
+                                title: item.title,
+                                image: item.imageUrl,
+                                link:
+                                  searchParams.get('type') === '0'
+                                    ? `/movie/${searchParams.get('id')}`
+                                    : `/tv/${searchParams.get('id')}`,
+                              };
+                            })
+                            .filter(Boolean) as {
+                            title: string;
+                            image: string;
+                            link: string;
+                          }[]) || []
                         }
                       />
                     </div>
