@@ -38,7 +38,7 @@ const Home: FC = () => {
       <div className='flex sm:hidden justify-between px-[4vw] mt-6'>
         <Link to='/' className='flex items-center gap-2'>
           <img className='w-8 h-8' src='/icon.png' alt='' />
-          <span className='text-xl font-medium'>Hgh</span>
+          <span className='text-xl font-medium'>FilmHot</span>
         </Link>
 
         <button onClick={() => setSidebarActive(!sidebarActive)}>
